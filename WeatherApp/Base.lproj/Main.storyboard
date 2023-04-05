@@ -25,6 +25,9 @@
                                 <items>
                                     <barButtonItem title="Add Location" width="395" id="Zmc-jY-wVX">
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <action selector="addLocationButtonAction:" destination="BYZ-38-t0r" id="fi8-uJ-bzi"/>
+                                        </connections>
                                     </barButtonItem>
                                 </items>
                                 <color key="barTintColor" systemColor="linkColor"/>
@@ -58,11 +61,74 @@
                     </view>
                     <connections>
                         <outlet property="mapView" destination="jf0-KY-tjw" id="8GM-Xh-Lv9"/>
+                        <segue destination="i07-rv-jgP" kind="show" identifier="navigateToAddLocation" id="ZF7-CB-xNj"/>
+                        <segue destination="Sg2-m5-Fme" kind="show" identifier="navigateToWeatherDetail" id="HY8-LY-Iv7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="135.1145038167939" y="3.5211267605633805"/>
+        </scene>
+        <!--Add Location Controller-->
+        <scene sceneID="8Lh-rD-tws">
+            <objects>
+                <viewController id="i07-rv-jgP" customClass="AddLocationController" customModule="WeatherApp" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="rvw-XC-Eay">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PwM-ry-kp6">
+                                <rect key="frame" x="0.0" y="765" width="393" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem title="Done" id="lIi-4c-7fr">
+                                        <connections>
+                                            <action selector="doneButtonAction:" destination="i07-rv-jgP" id="E0a-rR-QEu"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="XDS-ZG-vkJ"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="beO-rH-q1f"/>
+                    <connections>
+                        <outlet property="toolbar" destination="PwM-ry-kp6" id="b6c-y9-iwa"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Efh-Qc-Hbw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-392" y="803"/>
+        </scene>
+        <!--Weather Detail Controller-->
+        <scene sceneID="rZg-ti-cdU">
+            <objects>
+                <viewController id="Sg2-m5-Fme" customClass="WeatherDetailController" customModule="WeatherApp" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="GSS-Gt-nnn">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CCU-yb-DoU">
+                                <rect key="frame" x="0.0" y="769" width="393" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem title="Done" id="4WO-ff-k7a">
+                                        <connections>
+                                            <action selector="doneButtonAction:" destination="Sg2-m5-Fme" id="Cia-mL-7yN"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Xwe-AO-1UD"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="SUm-6L-3Cs"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jcL-Xf-Jkn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="691" y="803"/>
         </scene>
     </scenes>
     <resources>

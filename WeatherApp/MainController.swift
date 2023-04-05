@@ -15,6 +15,11 @@ class MainController: UIViewController {
     private let locationManager = CLLocationManager()
     
     private var currentLocationAdded = false
+    
+    private var locationData = [WeatherResponse]()
+    
+    private var addLocationScreenSegue = "navigateToAddLocation"
+    private var weatherDetailScreenSegue = "navigateToWeatherDetail"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +27,14 @@ class MainController: UIViewController {
         
         setupLocation()
         setupMap()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == addLocationScreenSegue {
+            print("Navigating to Add Location Screen")
+        } else if segue.identifier == weatherDetailScreenSegue {
+            print("Navigating to Weather Detail Screen")
+        }
     }
     
     private func setupLocation() {
@@ -39,9 +52,6 @@ class MainController: UIViewController {
         // set delegate
         mapView.delegate = self
         
-        // enable showing user location on map
-        // mapView.showsUserLocation = true
-        
         guard let location = locationManager.location else {
             return
         }
@@ -53,13 +63,17 @@ class MainController: UIViewController {
         let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: radiusInMeters, longitudinalMeters: radiusInMeters)
         mapView.setRegion(region, animated: true)
         
-        // camera boundries
-        // let cameraBoundry = MKMapView.CameraBoundary(coordinateRegion: region)
-        // mapView.setCameraBoundary(cameraBoundry, animated: true)
-        
         // control zooming
         let zoomRange = MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 100000)
         mapView.setCameraZoomRange(zoomRange, animated: true)
+    }
+    
+    @IBAction func navigateToWeatherDetailAction(sender: UIButton) {
+        performSegue(withIdentifier: weatherDetailScreenSegue, sender: self)
+    }
+    
+    @IBAction func addLocationButtonAction(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: addLocationScreenSegue, sender: self)
     }
     
     private func getUrlWith(query: String) -> URL? {
@@ -89,13 +103,13 @@ class MainController: UIViewController {
     
     private func loadWeather(search: String?, location: CLLocationCoordinate2D? = nil) {
         guard let search = search, !search.isEmpty else { return }
-
+        
         // Step 1: Get URL
         guard let url: URL = getUrlWith(query: search) else {
             print("Could not get url")
             return
         }
-
+        
         // Step 2: Create Session
         let urlSession = URLSession.shared
         
@@ -119,6 +133,7 @@ class MainController: UIViewController {
 
             if let weatherResponse = self.parseJson(data: data) {
                 DispatchQueue.main.async {
+                    self.locationData.append(weatherResponse)
                     if let location = location {
                         self.addLocationAnnotation(location: location, weatherData: weatherResponse)
                     } else {
@@ -153,14 +168,6 @@ extension MainController: MKMapViewDelegate {
             // set position of callout
             view.calloutOffset = CGPoint(x: 0, y: 20)
             
-            // add a button to right side of callout
-            let button = UIButton(type: .detailDisclosure)
-            view.rightCalloutAccessoryView = button
-            
-            // add an image to left side of callout
-            // let image = UIImage(systemName: "graduationcap.circle.fill")
-            // view.leftCalloutAccessoryView = UIImageView(image: image)
-            
             // change color of pin
             view.markerTintColor = .systemBlue
             
@@ -170,9 +177,15 @@ extension MainController: MKMapViewDelegate {
             if let annotation = annotation as? MyAnnotation {
                 // change marker glyph
                 view.glyphText = annotation.glyphText
+
                 let imageView = UIImageView(image: annotation.weatherImage)
                 imageView.preferredSymbolConfiguration = annotation.symbolConfiguration
                 view.leftCalloutAccessoryView = imageView
+                
+                // add a button to right side of callout
+                let button = UIButton(type: .detailDisclosure)
+                button.addTarget(self, action: #selector(self.navigateToWeatherDetailAction(sender:)), for: .touchUpInside)
+                view.rightCalloutAccessoryView = button
             }
         }
         
@@ -181,18 +194,6 @@ extension MainController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         print("Tapped \(control.tag)")
-        
-        guard let coordinates = view.annotation?.coordinate else {
-            return
-        }
-        
-        let launchOptions = [
-            MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeWalking
-        ]
-        
-        let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinates))
-        mapItem.openInMaps(launchOptions: launchOptions)
-        
     }
 }
 
