@@ -1,0 +1,101 @@
+//
+//  WeatherAPI.swift
+//  WeatherApp
+//
+//  Created by Chetan Godhani on 05/04/23.
+//
+
+import Foundation
+import CoreLocation
+
+func getUrlWith(query: String) -> URL? {
+    let baseUrl = "https://api.weatherapi.com"
+    let endPoint = "/v1/current.json"
+    let key = "9069e104d6a04c4d959172320231503"
+    let airQualityParam = "aqi=no"
+    
+    guard let url = "\(baseUrl)\(endPoint)?key=\(key)&q=\(query)&\(airQualityParam)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+        return nil
+    }
+
+    return URL(string: url)
+}
+
+func parseJson(data: Data) -> WeatherResponse? {
+    let jsonDecoder = JSONDecoder()
+    var weather: WeatherResponse?
+    do {
+        weather = try jsonDecoder.decode(WeatherResponse.self, from: data)
+    } catch {
+        print(error)
+    }
+    
+    return weather
+}
+
+func loadWeather(search: String?, callback: @escaping ((_ weatherResponse: WeatherResponse, _ location: CLLocationCoordinate2D?) -> Void), location: CLLocationCoordinate2D? = nil) {
+    guard let search = search, !search.isEmpty else { return }
+    
+    // Step 1: Get URL
+    guard let url: URL = getUrlWith(query: search) else {
+        print("Could not get url")
+        return
+    }
+    
+    // Step 2: Create Session
+    let urlSession = URLSession.shared
+    
+    // Step 3: Create task for session
+    let dataTask = urlSession.dataTask(with: url) { data, response, error in
+        guard error == nil else {
+            print("Error occured:")
+            print(error ?? "")
+            return
+        }
+        
+        guard let data = data else {
+            print("No data found")
+            return
+        }
+        
+        guard let _ = String(data: data, encoding: .utf8) else {
+            print("No data string")
+            return
+        }
+
+        if let weatherResponse = parseJson(data: data) {
+            DispatchQueue.main.async {
+                callback(weatherResponse, location)
+            }
+        }
+    }
+    
+    dataTask.resume()
+}
+
+
+struct WeatherResponse: Decodable {
+    let location: Location
+    let current: Current
+}
+
+struct Location: Decodable {
+    let name: String
+    let region: String
+    let country: String
+    let lat: Double
+    let lon: Double
+}
+
+struct Current: Decodable {
+    let temp_c: Float
+    let temp_f: Float
+    let condition: WeatherCondition
+    let is_day: Int
+    let feelslike_c: Float
+}
+
+struct WeatherCondition: Decodable {
+    let text: String
+    let code: Int
+}

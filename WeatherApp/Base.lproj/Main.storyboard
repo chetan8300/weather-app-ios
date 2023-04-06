@@ -81,25 +81,126 @@
                                 <rect key="frame" x="0.0" y="765" width="393" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem title="Done" id="lIi-4c-7fr">
+                                    <barButtonItem title="Cancel" id="lIi-4c-7fr">
                                         <connections>
-                                            <action selector="doneButtonAction:" destination="i07-rv-jgP" id="E0a-rR-QEu"/>
+                                            <action selector="cancelButtonAction:" destination="i07-rv-jgP" id="E0a-rR-QEu"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Ldc-92-0xy"/>
+                                    <barButtonItem title="Save" id="GtH-bv-cIP">
+                                        <connections>
+                                            <action selector="saveButtonAction:" destination="i07-rv-jgP" id="ARO-RH-XAX"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
                             </toolbar>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="LBU-xK-f4y">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="82"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Location..." textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7L7-Vu-TlI">
+                                        <rect key="frame" x="16" y="16" width="305" height="50"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" returnKeyType="search"/>
+                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="omf-Ie-bxv">
+                                        <rect key="frame" x="325" y="16" width="60" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="V7f-sq-bPI"/>
+                                            <constraint firstAttribute="height" constant="50" id="rjP-L2-svP"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="magnifyingglass" catalog="system">
+                                            <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="font" scale="large">
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
+                                            </preferredSymbolConfiguration>
+                                        </buttonConfiguration>
+                                    </button>
+                                </subviews>
+                                <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="8"/>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="Jmo-UF-LJq">
+                                <rect key="frame" x="51" y="221.33333333333334" width="291" height="399.33333333333326"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Hgt-lk-0tv">
+                                        <rect key="frame" x="25.666666666666686" y="0.0" width="240" height="240"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="240" id="8z3-0W-9uY"/>
+                                            <constraint firstAttribute="width" constant="240" id="BjL-8r-Mwv"/>
+                                        </constraints>
+                                    </imageView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="rW8-sK-8et">
+                                        <rect key="frame" x="0.0" y="265" width="291" height="37.666666666666686"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="C Temp" textAlignment="natural" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Wz-m4-t5S">
+                                                <rect key="frame" x="0.0" y="0.0" width="115.33333333333333" height="37.666666666666664"/>
+                                                <fontDescription key="fontDescription" name="TamilSangamMN-Bold" family="Tamil Sangam MN" pointSize="34"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="F Temp" textAlignment="natural" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kWJ-XZ-KyN">
+                                                <rect key="frame" x="123.33333333333334" y="0.0" width="110.66666666666666" height="37.666666666666664"/>
+                                                <fontDescription key="fontDescription" name="TamilSangamMN-Bold" family="Tamil Sangam MN" pointSize="34"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N4c-Iy-si7">
+                                                <rect key="frame" x="242" y="0.0" width="51" height="37.666666666666664"/>
+                                            </switch>
+                                        </subviews>
+                                    </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weather Type" textAlignment="natural" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="484-Zc-lLV">
+                                        <rect key="frame" x="72.333333333333329" y="327.66666666666663" width="146.33333333333337" height="26.666666666666686"/>
+                                        <fontDescription key="fontDescription" name="TamilSangamMN-Bold" family="Tamil Sangam MN" pointSize="24"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ket-Fk-pPh">
+                                        <rect key="frame" x="96" y="379.33333333333326" width="99" height="20"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="location" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="naa-q2-T9g">
+                                                <rect key="frame" x="0.0" y="0.99999999999999822" width="20" height="18.333333333333336"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="20" id="ALd-jK-iP5"/>
+                                                    <constraint firstAttribute="height" constant="20" id="Exk-kP-Tcr"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B6Z-SZ-h4p">
+                                                <rect key="frame" x="28" y="0.0" width="71" height="20"/>
+                                                <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="20"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="XDS-ZG-vkJ"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="LBU-xK-f4y" firstAttribute="top" secondItem="XDS-ZG-vkJ" secondAttribute="top" id="Bto-eH-l5x"/>
+                            <constraint firstItem="Jmo-UF-LJq" firstAttribute="centerY" secondItem="rvw-XC-Eay" secondAttribute="centerY" id="Cqz-Wa-jdl"/>
+                            <constraint firstItem="LBU-xK-f4y" firstAttribute="trailing" secondItem="XDS-ZG-vkJ" secondAttribute="trailing" id="L7Z-ga-u2v"/>
+                            <constraint firstItem="LBU-xK-f4y" firstAttribute="leading" secondItem="XDS-ZG-vkJ" secondAttribute="leading" id="QA0-2c-3lZ"/>
+                            <constraint firstItem="Jmo-UF-LJq" firstAttribute="centerX" secondItem="rvw-XC-Eay" secondAttribute="centerX" id="ozw-Qr-p7m"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="beO-rH-q1f"/>
                     <connections>
-                        <outlet property="toolbar" destination="PwM-ry-kp6" id="b6c-y9-iwa"/>
+                        <outlet property="cTemperatureLabel" destination="7Wz-m4-t5S" id="a3A-ql-JbZ"/>
+                        <outlet property="fTemperatureLabel" destination="kWJ-XZ-KyN" id="4CC-Xh-rfK"/>
+                        <outlet property="locationImage" destination="naa-q2-T9g" id="Wtg-Tw-oc7"/>
+                        <outlet property="locationLabel" destination="B6Z-SZ-h4p" id="W67-mY-SLK"/>
+                        <outlet property="searchLocationButton" destination="omf-Ie-bxv" id="ba3-kx-uFP"/>
+                        <outlet property="searchLocationTextField" destination="7L7-Vu-TlI" id="gpL-ZX-lxk"/>
+                        <outlet property="temperatureSwitch" destination="N4c-Iy-si7" id="Nvo-pq-dLc"/>
+                        <outlet property="weatherConditionImage" destination="Hgt-lk-0tv" id="Nkh-G1-pea"/>
+                        <outlet property="weatherTypeLabel" destination="484-Zc-lLV" id="zb8-Gf-auR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Efh-Qc-Hbw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-392" y="803"/>
+            <point key="canvasLocation" x="-350.38167938931298" y="802.81690140845069"/>
         </scene>
         <!--Weather Detail Controller-->
         <scene sceneID="rZg-ti-cdU">
@@ -132,6 +233,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="location" catalog="system" width="128" height="121"/>
+        <image name="magnifyingglass" catalog="system" width="128" height="117"/>
         <systemColor name="linkColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

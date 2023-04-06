@@ -8,8 +8,8 @@
 import UIKit
 import MapKit
 
-class MainController: UIViewController {
-
+class MainController: UIViewController, ReceiveWeatherData {
+    
     @IBOutlet weak var mapView: MKMapView!
     
     private let locationManager = CLLocationManager()
@@ -32,6 +32,8 @@ class MainController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == addLocationScreenSegue {
             print("Navigating to Add Location Screen")
+            let addLocationController = segue.destination as! AddLocationController
+            addLocationController.delegate = self
         } else if segue.identifier == weatherDetailScreenSegue {
             print("Navigating to Weather Detail Screen")
         }
@@ -56,7 +58,7 @@ class MainController: UIViewController {
             return
         }
         
-        loadWeather(search: "\(location.coordinate.latitude),\(location.coordinate.longitude)", location: location.coordinate)
+        loadWeather(search: "\(location.coordinate.latitude),\(location.coordinate.longitude)", callback: getWeatherData, location: location.coordinate)
 
         let radiusInMeters: CLLocationDistance = 1000
         
@@ -76,75 +78,19 @@ class MainController: UIViewController {
         performSegue(withIdentifier: addLocationScreenSegue, sender: self)
     }
     
-    private func getUrlWith(query: String) -> URL? {
-        let baseUrl = "https://api.weatherapi.com"
-        let endPoint = "/v1/current.json"
-        let key = "9069e104d6a04c4d959172320231503"
-        let airQualityParam = "aqi=no"
-        
-        guard let url = "\(baseUrl)\(endPoint)?key=\(key)&q=\(query)&\(airQualityParam)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
-            return nil
+    func getWeatherData(weatherData: WeatherResponse, location: CLLocationCoordinate2D? = nil) -> Void {
+        locationData.append(weatherData)
+        if let location = location {
+            addLocationAnnotation(location: location, weatherData: weatherData)
+        } else {
+            let newLocation = CLLocationCoordinate2D(latitude: weatherData.location.lat, longitude: weatherData.location.lon)
+            addLocationAnnotation(location: newLocation, weatherData: weatherData)
         }
-
-        return URL(string: url)
-    }
-
-    private func parseJson(data: Data) -> WeatherResponse? {
-        let jsonDecoder = JSONDecoder()
-        var weather: WeatherResponse?
-        do {
-            weather = try jsonDecoder.decode(WeatherResponse.self, from: data)
-        } catch {
-            print(error)
-        }
-        
-        return weather
     }
     
-    private func loadWeather(search: String?, location: CLLocationCoordinate2D? = nil) {
-        guard let search = search, !search.isEmpty else { return }
-        
-        // Step 1: Get URL
-        guard let url: URL = getUrlWith(query: search) else {
-            print("Could not get url")
-            return
-        }
-        
-        // Step 2: Create Session
-        let urlSession = URLSession.shared
-        
-        // Step 3: Create task for session
-        let dataTask = urlSession.dataTask(with: url) { [self] data, response, error in
-            guard error == nil else {
-                print("Error occured:")
-                print(error ?? "")
-                return
-            }
-            
-            guard let data = data else {
-                print("No data found")
-                return
-            }
-            
-            guard let _ = String(data: data, encoding: .utf8) else {
-                print("No data string")
-                return
-            }
-
-            if let weatherResponse = self.parseJson(data: data) {
-                DispatchQueue.main.async {
-                    self.locationData.append(weatherResponse)
-                    if let location = location {
-                        self.addLocationAnnotation(location: location, weatherData: weatherResponse)
-                    } else {
-                        let newLocation = CLLocationCoordinate2D(latitude: weatherResponse.location.lat, longitude: weatherResponse.location.lon)
-                        self.addLocationAnnotation(location: newLocation, weatherData: weatherResponse)
-                    }
-                }
-            }
-        }
-        
-        dataTask.resume()
+    func updateLocationsArray(weatherData: WeatherResponse) {
+        print("weatherData", weatherData)
+        locationData.append(weatherData)
     }
 }
 
@@ -177,6 +123,7 @@ extension MainController: MKMapViewDelegate {
             if let annotation = annotation as? MyAnnotation {
                 // change marker glyph
                 view.glyphText = annotation.glyphText
+                view.markerTintColor = annotation.markerTintColor
 
                 let imageView = UIImageView(image: annotation.weatherImage)
                 imageView.preferredSymbolConfiguration = annotation.symbolConfiguration
@@ -219,6 +166,7 @@ class MyAnnotation: NSObject, MKAnnotation {
     var glyphText: String?
     var weatherImage: UIImage?
     var symbolConfiguration: UIImage.SymbolConfiguration?
+    var markerTintColor: UIColor
     
     init(coordinate: CLLocationCoordinate2D, weatherData: WeatherResponse) {
         let tempC = "\(Int(weatherData.current.temp_c.rounded(.toNearestOrEven)))°C"
@@ -228,9 +176,27 @@ class MyAnnotation: NSObject, MKAnnotation {
         let weatherImage = weatherIconDictionary[weatherCode]?.generateNightImage()
         
         if (weatherData.current.is_day == 0) {
-            self.symbolConfiguration = UIImage.SymbolConfiguration(paletteColors: [.white, .white])
+            self.symbolConfiguration = UIImage.SymbolConfiguration(paletteColors: [.systemBlue, .systemBlue])
         } else {
             self.symbolConfiguration = UIImage.SymbolConfiguration(paletteColors: [.systemBlue, UIColor(red: 1.00, green: 0.65, blue: 0.00, alpha: 1.00)])
+        }
+        
+        self.markerTintColor = UIColor.systemPurple
+        if (weatherData.current.temp_c > 30) {
+            // Very hot
+            self.markerTintColor = UIColor.systemRed
+        } else if (weatherData.current.temp_c > 24 && weatherData.current.temp_c <= 30) {
+            // Hot
+            self.markerTintColor = UIColor.systemOrange
+        } else if (weatherData.current.temp_c > 16 && weatherData.current.temp_c <= 24) {
+            // Warm
+            self.markerTintColor = UIColor.systemOrange
+        } else if (weatherData.current.temp_c > 11 && weatherData.current.temp_c <= 16) {
+            // Cool
+            self.markerTintColor = UIColor.systemOrange
+        } else if (weatherData.current.temp_c >= 0 && weatherData.current.temp_c <= 11) {
+            // Cold
+            self.markerTintColor = UIColor.systemOrange
         }
         
         self.coordinate = coordinate
@@ -243,27 +209,6 @@ class MyAnnotation: NSObject, MKAnnotation {
     }
 }
 
-struct WeatherResponse: Decodable {
-    let location: Location
-    let current: Current
-}
-
-struct Location: Decodable {
-    let name: String
-    let region: String
-    let country: String
-    let lat: Double
-    let lon: Double
-}
-
-struct Current: Decodable {
-    let temp_c: Float
-    let condition: WeatherCondition
-    let is_day: Int
-    let feelslike_c: Float
-}
-
-struct WeatherCondition: Decodable {
-    let text: String
-    let code: Int
+protocol ReceiveWeatherData {
+  func updateLocationsArray(weatherData: WeatherResponse)  // weatherData: WeatherResponse object
 }
