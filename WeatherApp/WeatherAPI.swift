@@ -10,11 +10,13 @@ import CoreLocation
 
 func getUrlWith(query: String) -> URL? {
     let baseUrl = "https://api.weatherapi.com"
-    let endPoint = "/v1/current.json"
+    let endPoint = "/v1/forecast.json"
     let key = "9069e104d6a04c4d959172320231503"
     let airQualityParam = "aqi=no"
+    let daysParam = "days=7"
+    let alersParam = "alerts=no"
     
-    guard let url = "\(baseUrl)\(endPoint)?key=\(key)&q=\(query)&\(airQualityParam)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+    guard let url = "\(baseUrl)\(endPoint)?key=\(key)&q=\(query)&\(airQualityParam)&\(daysParam)&\(alersParam)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
         return nil
     }
 
@@ -75,16 +77,22 @@ func loadWeather(search: String?, callback: @escaping ((_ weatherResponse: Weath
 
 
 struct WeatherResponse: Decodable {
-    let location: Location
+    var location: Location
     let current: Current
+    let forecast: Forecast
+    
+    mutating func updateLocationForCurrent(currentLocation: CLLocationCoordinate2D) {
+        location.lat = currentLocation.latitude
+        location.lon = currentLocation.longitude
+    }
 }
 
 struct Location: Decodable {
     let name: String
     let region: String
     let country: String
-    let lat: Double
-    let lon: Double
+    var lat: Double
+    var lon: Double
 }
 
 struct Current: Decodable {
@@ -98,4 +106,20 @@ struct Current: Decodable {
 struct WeatherCondition: Decodable {
     let text: String
     let code: Int
+}
+
+struct Forecast: Decodable {
+    let forecastday: [ForecastDay]
+}
+
+struct ForecastDay: Decodable {
+    let date: String
+    let date_epoch: Int
+    let day: ForecastDayData
+}
+
+struct ForecastDayData: Decodable {
+    let maxtemp_c: Float
+    let mintemp_c: Float
+    let avgtemp_c: Float
 }

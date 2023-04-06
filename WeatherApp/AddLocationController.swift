@@ -60,7 +60,7 @@ class AddLocationController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func saveButtonAction(_ sender: Any) {
-        delegate.updateLocationsArray(weatherData: weatherData)
+        delegate.updateLocationsArray(weatherData: weatherData, location: nil)
         dismiss(animated: true)
     }
     
@@ -80,8 +80,8 @@ class AddLocationController: UIViewController, UITextFieldDelegate {
         locationImage.isHidden = false
         temperatureSwitch.isHidden = false
         
-        cTemperatureLabel.text = "\(Int(weatherData.current.temp_c.rounded(.toNearestOrEven)))°C"
-        fTemperatureLabel.text = "\(Int(weatherData.current.temp_f.rounded(.toNearestOrEven)))°F"
+        cTemperatureLabel.text = "\(weatherData.current.temp_c)°C"
+        fTemperatureLabel.text = "\(weatherData.current.temp_f)°F"
         weatherTypeLabel.text = weatherData.current.condition.text
         
         let weatherCode = weatherData.current.condition.code
