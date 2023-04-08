@@ -29,6 +29,7 @@ class AddLocationController: UIViewController, UITextFieldDelegate {
         
         // Do any additional setup after loading the view.
         view.addGestureRecognizer(UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing(_:))))
+        self.view.backgroundColor = UIColor(red: 0.49, green: 0.73, blue: 0.91, alpha: 1.00)
         
         searchLocationTextField.delegate = self
         fTemperatureLabel.text = ""

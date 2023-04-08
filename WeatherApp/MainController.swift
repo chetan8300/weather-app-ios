@@ -143,6 +143,7 @@ extension MainController: MKMapViewDelegate {
                 
                 // add a button to right side of callout
                 let button = UIButton(type: .detailDisclosure)
+                button.tintColor = .systemBlue
                 button.addAction(
                     UIAction { _ in
                         self.performSegue(withIdentifier: self.weatherDetailScreenSegue, sender: annotation.weatherData)
@@ -193,6 +194,9 @@ extension MainController: UITableViewDataSource {
         content.text = "\(item.location.name), \(item.location.region)"
         content.secondaryText = "\(item.current.temp_c)°C (H:\(tempData.maxtemp_c)°C, L:\(tempData.mintemp_c)°C)"
         content.image = weatherIconDictionary[weatherCode]?.generateNightImage()
+        
+        content.textProperties.color = UIColor(red: 0.00, green: 0.18, blue: 0.38, alpha: 1.00)
+        content.secondaryTextProperties.color = UIColor(red: 0.00, green: 0.18, blue: 0.38, alpha: 1.00)
         
         cell.contentConfiguration = content
         

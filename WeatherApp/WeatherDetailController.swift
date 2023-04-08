@@ -24,6 +24,8 @@ class WeatherDetailController: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        self.view.backgroundColor = UIColor(red: 0.49, green: 0.73, blue: 0.91, alpha: 1.00)
+        
         tableView.dataSource = self
         tableView.delegate = self
         
