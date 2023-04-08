@@ -40,7 +40,6 @@ class WeatherDetailController: UIViewController {
     
     func setupCurrentWeatherData() {
         if let weatherData = weatherData {
-            print(weatherData)
             tempCLabel.text = "\(weatherData.current.temp_c)°C"
             weatherTypeLabel.text = weatherData.current.condition.text
             let weatherCode = weatherData.current.condition.code
