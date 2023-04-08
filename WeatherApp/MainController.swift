@@ -40,6 +40,9 @@ class MainController: UIViewController, ReceiveWeatherData {
             addLocationController.delegate = self
         } else if segue.identifier == weatherDetailScreenSegue {
             // Navigating to Weather Detail Screen
+            guard let weatherData = sender as? WeatherResponse else { return }
+            let weatherDetailController = segue.destination as! WeatherDetailController
+            weatherDetailController.weatherData = weatherData
         }
     }
     
@@ -62,10 +65,9 @@ class MainController: UIViewController, ReceiveWeatherData {
             return
         }
         
-        loadWeather(search: "\(location.coordinate.latitude),\(location.coordinate.longitude)", callback: updateLocationsArray, location: location.coordinate)
+        loadWeather(search: "\(location.coordinate.latitude),\(location.coordinate.longitude)", successCallback: updateLocationsArray, errorCallback: showErrorAlert, location: location.coordinate)
 
-        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: radiusInMeters, longitudinalMeters: radiusInMeters)
-        mapView.setRegion(region, animated: true)
+        relocateToLocation(location: location.coordinate)
         
         // control zooming
         let zoomRange = MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 100000)
@@ -85,10 +87,16 @@ class MainController: UIViewController, ReceiveWeatherData {
         } else {
             let newLocation = CLLocationCoordinate2D(latitude: weatherData.location.lat, longitude: weatherData.location.lon)
             addLocationAnnotation(location: newLocation, weatherData: weatherData)
+            relocateToLocation(location: newLocation)
             locationData.append(weatherData)
         }
         
         tableView.reloadData()
+    }
+    
+    func relocateToLocation(location: CLLocationCoordinate2D) {
+        let region = MKCoordinateRegion(center: location, latitudinalMeters: radiusInMeters, longitudinalMeters: radiusInMeters)
+        mapView.setRegion(region, animated: true)
     }
 }
 
@@ -197,10 +205,9 @@ extension MainController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let item = locationData[indexPath.row]
-        let location = CLLocationCoordinate2D(latitude: item.location.lat, longitude: item.location.lon)
         
-        let region = MKCoordinateRegion(center: location, latitudinalMeters: radiusInMeters, longitudinalMeters: radiusInMeters)
-        mapView.setRegion(region, animated: true)
+        let location = CLLocationCoordinate2D(latitude: item.location.lat, longitude: item.location.lon)
+        relocateToLocation(location: location)
     }
 }
 

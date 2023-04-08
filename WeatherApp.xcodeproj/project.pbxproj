@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		75125F7F29E11F3B00CCD933 /* HelperExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75125F7E29E11F3B00CCD933 /* HelperExtension.swift */; };
 		7543D20829DD0D6E00FCCDAD /* WeatherIconMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7543D20729DD0D6E00FCCDAD /* WeatherIconMap.swift */; };
 		7543D20A29DDFA4E00FCCDAD /* AddLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7543D20929DDFA4E00FCCDAD /* AddLocationController.swift */; };
 		7543D20C29DDFBAA00FCCDAD /* WeatherDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7543D20B29DDFBAA00FCCDAD /* WeatherDetailController.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		75125F7E29E11F3B00CCD933 /* HelperExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperExtension.swift; sourceTree = "<group>"; };
 		7543D20729DD0D6E00FCCDAD /* WeatherIconMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherIconMap.swift; sourceTree = "<group>"; };
 		7543D20929DDFA4E00FCCDAD /* AddLocationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationController.swift; sourceTree = "<group>"; };
 		7543D20B29DDFBAA00FCCDAD /* WeatherDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDetailController.swift; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 				7543D20929DDFA4E00FCCDAD /* AddLocationController.swift */,
 				7543D20B29DDFBAA00FCCDAD /* WeatherDetailController.swift */,
 				7543D20729DD0D6E00FCCDAD /* WeatherIconMap.swift */,
+				75125F7E29E11F3B00CCD933 /* HelperExtension.swift */,
 				75EAB48429DB58EF00952AA9 /* Main.storyboard */,
 				75EAB48729DB58F300952AA9 /* Assets.xcassets */,
 				75EAB48929DB58F300952AA9 /* LaunchScreen.storyboard */,
@@ -155,6 +158,7 @@
 				7543D20C29DDFBAA00FCCDAD /* WeatherDetailController.swift in Sources */,
 				75EAB47F29DB58EF00952AA9 /* AppDelegate.swift in Sources */,
 				7543D20829DD0D6E00FCCDAD /* WeatherIconMap.swift in Sources */,
+				75125F7F29E11F3B00CCD933 /* HelperExtension.swift in Sources */,
 				75EAB48129DB58EF00952AA9 /* SceneDelegate.swift in Sources */,
 				7543D20A29DDFA4E00FCCDAD /* AddLocationController.swift in Sources */,
 			);

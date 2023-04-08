@@ -7,11 +7,12 @@
 
 import Foundation
 import CoreLocation
+import UIKit
 
 func getUrlWith(query: String) -> URL? {
     let baseUrl = "https://api.weatherapi.com"
     let endPoint = "/v1/forecast.json"
-    let key = "9069e104d6a04c4d959172320231503"
+    let key = "726fcbb7cb9a4e45abd145200230304"
     let airQualityParam = "aqi=no"
     let daysParam = "days=7"
     let alersParam = "alerts=no"
@@ -35,7 +36,7 @@ func parseJson(data: Data) -> WeatherResponse? {
     return weather
 }
 
-func loadWeather(search: String?, callback: @escaping ((_ weatherResponse: WeatherResponse, _ location: CLLocationCoordinate2D?) -> Void), location: CLLocationCoordinate2D? = nil) {
+func loadWeather(search: String?, successCallback: @escaping ((_ weatherResponse: WeatherResponse, _ location: CLLocationCoordinate2D?) -> Void), errorCallback: @escaping ((_ message: String) -> Void), location: CLLocationCoordinate2D? = nil) {
     guard let search = search, !search.isEmpty else { return }
     
     // Step 1: Get URL
@@ -67,7 +68,11 @@ func loadWeather(search: String?, callback: @escaping ((_ weatherResponse: Weath
 
         if let weatherResponse = parseJson(data: data) {
             DispatchQueue.main.async {
-                callback(weatherResponse, location)
+                successCallback(weatherResponse, location)
+            }
+        } else {
+            DispatchQueue.main.async {
+                errorCallback("Location not found")
             }
         }
     }
@@ -122,4 +127,5 @@ struct ForecastDayData: Decodable {
     let maxtemp_c: Float
     let mintemp_c: Float
     let avgtemp_c: Float
+    let condition: WeatherCondition
 }

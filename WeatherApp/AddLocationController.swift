@@ -47,12 +47,12 @@ class AddLocationController: UIViewController, UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.endEditing(true)
-        loadWeather(search: textField.text!, callback: getWeatherData)
+        loadWeather(search: textField.text!, successCallback: getWeatherData, errorCallback: showErrorAlert)
         return true
     }
     
     @IBAction func onSearchTapped(_ sender: UIButton) {
-        loadWeather(search: searchLocationTextField.text!, callback: getWeatherData)
+        loadWeather(search: searchLocationTextField.text!, successCallback: getWeatherData, errorCallback: showErrorAlert)
     }
     
     @IBAction func cancelButtonAction(_ sender: UIBarButtonItem) {
@@ -60,8 +60,20 @@ class AddLocationController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func saveButtonAction(_ sender: Any) {
-        delegate.updateLocationsArray(weatherData: weatherData, location: nil)
-        dismiss(animated: true)
+        if let weatherData = weatherData {
+            delegate.updateLocationsArray(weatherData: weatherData, location: nil)
+            dismiss(animated: true)
+        } else {
+            let message = "Please search a location"
+            
+            let alert = UIAlertController(title: "Save Error", message: message, preferredStyle: .alert)
+            
+            let okButton = UIAlertAction(title: "Dismiss", style: .default)
+            
+            alert.addAction(okButton)
+            
+            show(alert, sender: nil)
+        }
     }
     
     @IBAction func onTemperatureSwitchTapped(_ sender: UISwitch) {
