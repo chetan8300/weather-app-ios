@@ -16,10 +16,10 @@ class WeatherDetailController: UIViewController {
     @IBOutlet weak var locationIconView: UIImageView!
     @IBOutlet weak var otherTemperatureLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
-
+    
     var weatherData: WeatherResponse!
     var forecastData = [ForecastDay]()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -34,10 +34,6 @@ class WeatherDetailController: UIViewController {
         otherTemperatureLabel.text = ""
         
         setupCurrentWeatherData()
-    }
-    
-    @IBAction func doneButtonAction(_ sender: UIBarButtonItem) {
-        dismiss(animated: true)
     }
     
     func setupCurrentWeatherData() {
@@ -73,7 +69,7 @@ extension WeatherDetailController: UITableViewDataSource {
     
     func getDayOfWeek(for date: String) -> String? {
         let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-
+        
         let formatter  = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         

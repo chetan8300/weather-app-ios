@@ -20,7 +20,7 @@ func getUrlWith(query: String) -> URL? {
     guard let url = "\(baseUrl)\(endPoint)?key=\(key)&q=\(query)&\(airQualityParam)&\(daysParam)&\(alersParam)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
         return nil
     }
-
+    
     return URL(string: url)
 }
 
@@ -65,7 +65,7 @@ func loadWeather(search: String?, successCallback: @escaping ((_ weatherResponse
             print("No data string")
             return
         }
-
+        
         if let weatherResponse = parseJson(data: data) {
             DispatchQueue.main.async {
                 successCallback(weatherResponse, location)

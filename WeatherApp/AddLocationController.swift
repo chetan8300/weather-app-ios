@@ -9,7 +9,7 @@ import UIKit
 import CoreLocation
 
 class AddLocationController: UIViewController, UITextFieldDelegate {
-
+    
     @IBOutlet weak var searchLocationTextField: UITextField!
     @IBOutlet weak var searchLocationButton: UIButton!
     @IBOutlet weak var cTemperatureLabel: UILabel!
@@ -26,8 +26,7 @@ class AddLocationController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
         // Do any additional setup after loading the view.
         view.addGestureRecognizer(UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing(_:))))
         
@@ -104,7 +103,7 @@ class AddLocationController: UIViewController, UITextFieldDelegate {
         let nightTextFieldColor = UIColor(red: 0.27, green: 0.29, blue: 0.40, alpha: 1.00)
         let dayTextFieldColor = UIColor(red: 1.00, green: 0.81, blue: 0.65, alpha: 1.00)
         let placeholder = searchLocationTextField.placeholder ?? ""
-
+        
         if (weatherData.current.is_day == 0) {
             let dayColorsConfig = UIImage.SymbolConfiguration(paletteColors: [.white, .white])
             weatherConditionImage.preferredSymbolConfiguration = dayColorsConfig
@@ -117,7 +116,7 @@ class AddLocationController: UIViewController, UITextFieldDelegate {
             searchLocationTextField.backgroundColor = nightTextFieldColor
             searchLocationTextField.textColor = UIColor.white
             searchLocationTextField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
-
+            
         } else {
             let nightColorsConfig = UIImage.SymbolConfiguration(paletteColors: [.systemBlue, UIColor(red: 1.00, green: 0.65, blue: 0.00, alpha: 1.00)])
             weatherConditionImage.preferredSymbolConfiguration = nightColorsConfig

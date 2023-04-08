@@ -22,7 +22,7 @@ class MainController: UIViewController, ReceiveWeatherData {
     
     private var addLocationScreenSegue = "navigateToAddLocation"
     private var weatherDetailScreenSegue = "navigateToWeatherDetail"
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -50,13 +50,13 @@ class MainController: UIViewController, ReceiveWeatherData {
         locationManager.requestWhenInUseAuthorization()
         locationManager.delegate = self
     }
-
+    
     private func addLocationAnnotation(location: CLLocationCoordinate2D, weatherData: WeatherResponse) {
         let annotation = MyAnnotation(coordinate: location, weatherData: weatherData)
         
         mapView.addAnnotation(annotation)
     }
-
+    
     private func setupMap() {
         // set delegate
         mapView.delegate = self
@@ -66,7 +66,7 @@ class MainController: UIViewController, ReceiveWeatherData {
         }
         
         loadWeather(search: "\(location.coordinate.latitude),\(location.coordinate.longitude)", successCallback: updateLocationsArray, errorCallback: showErrorAlert, location: location.coordinate)
-
+        
         relocateToLocation(location: location.coordinate)
         
         // control zooming
@@ -136,7 +136,7 @@ extension MainController: MKMapViewDelegate {
                 // change marker glyph
                 view.glyphText = annotation.glyphText
                 view.markerTintColor = annotation.markerTintColor
-
+                
                 let imageView = UIImageView(image: annotation.weatherImage)
                 imageView.preferredSymbolConfiguration = annotation.symbolConfiguration
                 view.leftCalloutAccessoryView = imageView
@@ -144,9 +144,9 @@ extension MainController: MKMapViewDelegate {
                 // add a button to right side of callout
                 let button = UIButton(type: .detailDisclosure)
                 button.addAction(
-                        UIAction { _ in
-                            self.performSegue(withIdentifier: self.weatherDetailScreenSegue, sender: annotation.weatherData)
-                        }, for: .touchUpInside)
+                    UIAction { _ in
+                        self.performSegue(withIdentifier: self.weatherDetailScreenSegue, sender: annotation.weatherData)
+                    }, for: .touchUpInside)
                 view.rightCalloutAccessoryView = button
             }
         }
@@ -264,5 +264,5 @@ class MyAnnotation: NSObject, MKAnnotation {
 }
 
 protocol ReceiveWeatherData {
-  func updateLocationsArray(weatherData: WeatherResponse, location: CLLocationCoordinate2D?)  // weatherData: WeatherResponse object
+    func updateLocationsArray(weatherData: WeatherResponse, location: CLLocationCoordinate2D?)  // weatherData: WeatherResponse object
 }
