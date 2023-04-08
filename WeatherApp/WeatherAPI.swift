@@ -12,7 +12,7 @@ import UIKit
 func getUrlWith(query: String) -> URL? {
     let baseUrl = "https://api.weatherapi.com"
     let endPoint = "/v1/forecast.json"
-    let key = "726fcbb7cb9a4e45abd145200230304"
+    let key = "8224ba780e9049be832193108230804"
     let airQualityParam = "aqi=no"
     let daysParam = "days=7"
     let alersParam = "alerts=no"
